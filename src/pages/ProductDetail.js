@@ -43,7 +43,7 @@ const ProductDetail = () => {
     const{title,description,brand,category,images,price,discountPercentage,rating,stock,thumbnail} = currentItem;
     return (
         <section className='container product_details my-4 py-4 bg-warning'>
-           <div className='row p-5 product_display'>
+           <div className='d-block d-md-flex w-100 gap-3 p-5 product_display'>
                <div className='col-3 imageSlider'>
                    <img src={thumbnail} alt={title}/>
                </div>
@@ -73,13 +73,13 @@ const ProductDetail = () => {
                         <span className='ratings_head fw-bold'>Ratings : </span>
                         <span><Ratings rating = {rating}/></span>
                     </div>
-                    <div className='stock_ mt-3 d-flex gap-3'>
+                    <div className='stock_ mt-3 d-block d-md-flex gap-3'>
                         <div className='stock_cal'>
                            <span className={`${quantity === 0 ? 'disablePlusStock' : ''}`} onClick={()=>count('minus')}>-</span>
                            <span>{quantity}</span>
                            <span className={`${stock <= quantity ? 'disablePlusStock' : ''}`} onClick={()=>count('plus')}>+</span>
                         </div>
-                        <button type='button' className={`${quantity===0 ? 'disabled':''} btn btn-primary`} onClick={()=>AddToCart()}>Add To Cart</button>
+                        <button type='button' className={`${quantity===0 ? 'disabled':''} btn btn-primary mt-3 mt-md-0`} onClick={()=>AddToCart()}>Add To Cart</button>
                     </div>
                </div>
            </div>
