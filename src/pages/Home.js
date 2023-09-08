@@ -1,33 +1,18 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
+import Category from '../components/Category';
+import Product from '../components/Product';
 
 const Home = () => {
-
-  const [products,setProducts] = useState([]);
-
-  useEffect(()=>{
-    const fetchData =  async() => {
-      try{
-        const response = await fetch('https://dummyjson.com/products');
-        const data = await response.json();
-        console.log(JSON.stringify(data,null,2));
-        setProducts(data.products);
-      }catch(err){
-        console.log(err);
-      }
-    } 
-    fetchData();   
-  },[]);
-
   return (
    <article>
       <section>
-          {products.length > 0 && products.map((prod,i)=>{
-            return(
-              <div className='items_details'>
-                {prod.category}
-              </div>
-            )
-          })}
+          <div className='categoryList my-2 mx-4 py-2'>
+            <Category/>
+          </div>
+          
+          <div className='container d-flex flex-wrap justify-content-around justify-content-md-start p-sm-0 mx-auto my-3 my-md-5 product_card'>
+            <Product/>
+          </div>
       </section>
    </article>
   )
