@@ -1,11 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Ratings from '../components/Ratings';
+import { GlobalState } from '../ContextAPI';
+import QuantityChange from '../components/QuantityChange';
 
 const ProductDetail = () => {
     const{id} = useParams();
     const[currentItem,setCurrentItem] = useState(null);
     const[quantity,setQuantity] = useState(1);
+
+    const{AddToCart,RemoveFromCart,cart} = GlobalState();
 
     useEffect(()=>{
       const getProductDetails = async() => {
@@ -21,22 +25,11 @@ const ProductDetail = () => {
       getProductDetails();
     },[id]);
 
-    const count = (condition) => {
-        let result = quantity;
-        if(condition === 'plus'){
-            if(stock <= quantity) return
-            result += 1
-        }else{
-            if(result=== 0) return;
-            result -= 1;
-        }
-        setQuantity(result);
-    }
 
-    const AddToCart = () => {
-        let addedItem = {...currentItem,quantity:quantity}
-        console.log('addded', addedItem);
-    }
+    // const AddToCart = () => {
+    //     let addedItem = {...currentItem,quantity:quantity}
+    //     console.log('addded', addedItem);
+    // }
     
     if(!currentItem) return
 
@@ -74,12 +67,15 @@ const ProductDetail = () => {
                         <span><Ratings rating = {rating}/></span>
                     </div>
                     <div className='stock_ mt-3 d-block d-md-flex gap-3'>
-                        <div className='stock_cal'>
-                           <span className={`${quantity === 0 ? 'disablePlusStock' : ''}`} onClick={()=>count('minus')}>-</span>
-                           <span>{quantity}</span>
-                           <span className={`${stock <= quantity ? 'disablePlusStock' : ''}`} onClick={()=>count('plus')}>+</span>
-                        </div>
-                        <button type='button' className={`${quantity===0 ? 'disabled':''} btn btn-primary mt-3 mt-md-0`} onClick={()=>AddToCart()}>Add To Cart</button>
+                        <QuantityChange quantity={quantity} setQuantity={setQuantity} stock={stock} prod={currentItem}/>
+                        {cart.some((item)=> currentItem.id === item.id)?
+                            (
+                                <button type='button' className={`btn btn-danger mt-3 mt-md-0`} onClick={()=>RemoveFromCart(currentItem.id)}>Remove from Cart</button>
+                            ):(
+                                <button type='button' className={`${quantity===0 ? 'disabled':''} btn btn-primary mt-3 mt-md-0`} onClick={()=>AddToCart(currentItem,quantity)}>Add To Cart</button>
+                            )
+                        }
+                        
                     </div>
                </div>
            </div>

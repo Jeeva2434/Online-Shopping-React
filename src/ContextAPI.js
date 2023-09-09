@@ -8,6 +8,8 @@ const ContextAPI = ({children}) => {
     const [products,setProducts] = useState([]);
     const [category,setCategory] = useState([]);
     const [displayProduct,setDisplayProduct] = useState([]);
+    const[cart,setCart] = useState([]);
+    const[filterOpt,setFilterOpt] = useState({sort:''});
 
     useEffect(()=>{
       const fetchData =  async() => {
@@ -71,6 +73,51 @@ const ContextAPI = ({children}) => {
         setCategory(activateCat);
     }
 
+    const AddToCart = (currentItem,quantity) => {
+        setCart([...cart,{...currentItem,quantity:quantity}]);
+        setDisplayProduct((prev)=> prev.map(item=>{
+            if(item.id !== currentItem.id)
+              return item;
+            else{
+                return {...item,quantity:quantity}
+            }
+        }));
+    }
+
+    const RemoveFromCart = (id) => {
+        setCart((prev)=> prev.filter(item=>item.id !== id));
+        setDisplayProduct((prev)=> prev.map(item=>{
+            if(item.id !== id)
+              return item;
+            else{
+                return {...item,quantity:0}
+            }
+        }));
+    }
+    
+    const quantityUpdate = (currentItem,quantity) => {
+        const updatedCart = cart.map((item,i) => {
+            if(currentItem.id === item.id){
+                return {...item,quantity:quantity}
+            }else{
+                 return item;
+            }
+        })
+        setCart(updatedCart);
+    }
+
+    let timer;
+    const searchFilter = (val) => {
+        clearTimeout(timer);
+        timer = setTimeout(async()=>{
+            const response = await fetch(`https://dummyjson.com/products/search?q=${val}`)
+            const data = await response.json();
+            setDisplayProduct(data.products);
+        },2000);
+        
+        return () => clearTimeout(timer);
+    }
+
 
     return (
         <ShopCart.Provider
@@ -81,7 +128,15 @@ const ContextAPI = ({children}) => {
             setCategory,
             displayProduct,
             setDisplayProduct,
-            handleCategory
+            handleCategory,
+            cart,
+            setCart,
+            AddToCart,
+            RemoveFromCart,
+            quantityUpdate,
+            searchFilter,
+            filterOpt,
+            setFilterOpt
         }}>
             {children}
         </ShopCart.Provider>
@@ -89,7 +144,7 @@ const ContextAPI = ({children}) => {
 }
 
 export const GlobalState = () => {
-    console.log(useContext(ShopCart));
+    // console.log(useContext(ShopCart));
     return useContext(ShopCart);
 }
 
