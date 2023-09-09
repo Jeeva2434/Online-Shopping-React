@@ -38,7 +38,9 @@ const Cart = () => {
           </table>
         </div> 
         ):(
-          <div>No Items in the Cart!!</div>
+            <div className='container fw-normal fs-1 bg-warning p-5 mx-auto my-5 text-center'>
+                Strike out! Your cart is empty ...
+            </div>
         )             
       }
       
