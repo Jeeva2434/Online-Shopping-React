@@ -17,10 +17,10 @@ const Product = () => {
     let filterProduct = []
 
     if(filterOpt.sort==='asc'){
-        filterProduct = (displayProduct.sort(function(a,b){return parseInt(b.price) - parseInt(a.price)}))
+        filterProduct = (displayProduct.sort(function(a,b){return parseInt(a.price) - parseInt(b.price)}))
     }
     else if(filterOpt.sort==='desc'){
-        filterProduct = (displayProduct.sort(function(a,b){return parseInt(a.price) - parseInt(b.price)}))
+        filterProduct = (displayProduct.sort(function(a,b){return parseInt(b.price) - parseInt(a.price)}))
     }
     else{
         filterProduct = displayProduct;
