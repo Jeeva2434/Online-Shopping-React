@@ -1,30 +1,9 @@
 import React from 'react'
+import { GlobalState } from '../ContextAPI'
 
 const CategoryList = ({id,name,activeCategory,category,setCategory}) => {
 
-
-    const getCatProducts = async(activeCat) => {
-        try{
-            const CAT_URL = activeCat !== 'All' ? `https://dummyjson.com/products/category/${activeCat}` : 'https://dummyjson.com/products';
-            let response = await fetch(CAT_URL);
-            let data = await response.json();
-            console.log('cat product',data);
-        }catch(err){
-        console.log(err);
-        }
-    }
-
-    const handleCategory = (selectedID) => {
-        let activateCat = category.map((category)=> {
-          if(category.id === selectedID){
-            getCatProducts(category.name);
-            return {...category,activeCategory:true}
-          }else{
-            return {...category,activeCategory:false}
-          }
-        })
-        setCategory(activateCat);
-    }
+    const{handleCategory} = GlobalState();
 
     return (
         <>

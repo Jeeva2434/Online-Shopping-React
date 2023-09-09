@@ -1,29 +1,9 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import CategoryList from './CategoryList';
+import { GlobalState } from '../ContextAPI';
 
 const Category = () => {
-    const [category,setCategory] = useState([]);
-
-    useEffect(()=>{
-        const categoryList = async() => {
-            try{
-             const response = await fetch('	https://dummyjson.com/products/categories');
-             const data = await response.json();
-             console.log(data);
-             let structureChange = data.map((item,i)=>{
-               return {
-                id:i+1,
-                name : item
-               }
-             }) 
-             setCategory([{id:0,name:'All',activeCategory:true},...structureChange]);
-            }catch(err){
-               console.log(err);
-            }
-          } 
-          categoryList();
-    },[]);
-
+    const{category,setCategory} = GlobalState();
 
     return (
         <>
